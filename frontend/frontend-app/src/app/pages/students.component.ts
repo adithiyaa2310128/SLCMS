@@ -105,8 +105,12 @@ import { StudentService } from '../services/student.service';
                 </span>
               </td>
               <td>
-                <span class="badge" [class.good]="s.riskStatus === 'Normal'" [class.warn]="s.riskStatus === 'At Risk'">
-                  {{ s.riskStatus || 'Normal' }}
+                <span class="badge" 
+                      [class.good]="s.riskStatus === 'Low' || !s.riskStatus" 
+                      [class.medium]="s.riskStatus === 'Medium'"
+                      [class.warn]="s.riskStatus === 'High'"
+                      [class.danger]="s.riskStatus === 'Critical'">
+                  {{ s.riskStatus || 'Low' }}
                 </span>
               </td>
               <td>
@@ -178,7 +182,9 @@ import { StudentService } from '../services/student.service';
       padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: 500;
     }
     .badge.good { background: #eafaf1; color: #27ae60; }
-    .badge.warn { background: #fde8e7; color: #e74c3c; }
+    .badge.medium { background: #fef9e7; color: #f39c12; }
+    .badge.warn { background: #fdf2e9; color: #e67e22; }
+    .badge.danger { background: #fde8e7; color: #e74c3c; }
 
     .btn-delete {
       background: none; border: none; cursor: pointer; font-size: 1.1rem;

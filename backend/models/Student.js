@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 // 1️⃣ DEFINE SCHEMA
 const studentSchema = new mongoose.Schema(
   {
+    _id: {
+      type: String
+    },
     studentId: {
       type: String,
       required: true,
@@ -32,7 +35,7 @@ const studentSchema = new mongoose.Schema(
 
     lifecycleStage: {
       type: String,
-      enum: ["Admission", "Academic", "Placement", "Alumni"],
+      enum: ["Admission", "Academic", "Academics", "Placement", "Alumni", "Higher Studies"],
       default: "Admission"
     },
 
@@ -48,8 +51,8 @@ const studentSchema = new mongoose.Schema(
 
     riskStatus: {
       type: String,
-      enum: ["Normal", "At Risk"],
-      default: "Normal"
+      enum: ["Low", "Medium", "High", "Critical"],
+      default: "Low"
     },
 
     lifeCycleIndex: {

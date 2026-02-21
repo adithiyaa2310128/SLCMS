@@ -62,7 +62,7 @@ import { AuthService } from '../services/auth.service';
               <tbody>
                 <tr *ngFor="let student of atRiskStudents">
                   <td>{{ student.name }}</td>
-                  <td><span class="badge risk">{{ student.riskStatus }}</span></td>
+                  <td><span class="badge" [class.warn]="student.riskStatus === 'High'" [class.danger]="student.riskStatus === 'Critical'">{{ student.riskStatus }}</span></td>
                   <td>Low Attendance / Poor Marks</td>
                 </tr>
               </tbody>
@@ -215,7 +215,11 @@ import { AuthService } from '../services/auth.service';
       font-size: 0.75rem;
       font-weight: 600;
     }
-    .badge.risk {
+    .badge.warn {
+      background: #fdf2e9;
+      color: #e67e22;
+    }
+    .badge.danger {
       background: #fde8e7;
       color: #e74c3c;
     }
