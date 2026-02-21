@@ -2,18 +2,8 @@
   "statusCode": 200,
   "data": {
     "totalStudents": 53,
-    "totalAlumni": 29,
-    "averageAttendance": 75,
-    "recentChats": [
-      {
-        "_id": "699745792becab0dc485e8d9",
-        "senderId": "69973f3b2becab0dc485e8d1",
-        "senderName": "dhana",
-        "message": "hi",
-        "room": "google",
-        "timestamp": "2026-02-19T17:16:41.274Z",
-        "__v": 0
-      }
-    ]
+    "totalAlumni": 28,
+    "averageAttendance": 0,
+    "recentChats": []
   }
 }
