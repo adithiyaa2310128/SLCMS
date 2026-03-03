@@ -35,8 +35,8 @@ const studentSchema = new mongoose.Schema(
 
     lifecycleStage: {
       type: String,
-      enum: ["Admission", "Academic", "Academics", "Placement", "Alumni", "Higher Studies"],
-      default: "Admission"
+      enum: ["APPLICANT", "ENROLLED", "ACADEMICS", "GRADUATION_ELIGIBLE", "ALUMNI"],
+      default: "APPLICANT"
     },
 
     attendancePercentage: {

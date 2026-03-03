@@ -36,7 +36,7 @@ const updateStudentIntelligence = async (studentId) => {
 
   /* 2️⃣ PLACEMENT ELIGIBILITY */
   student.placementEligible =
-    student.lifecycleStage === "Academic" &&
+    (student.lifecycleStage === "ACADEMICS" || student.lifecycleStage === "GRADUATION_ELIGIBLE") &&
     student.attendancePercentage >= 75 &&
     student.gpa >= 6.5 &&
     (student.riskStatus === "Low" || student.riskStatus === "Medium");

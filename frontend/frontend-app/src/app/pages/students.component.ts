@@ -56,10 +56,11 @@ import { StudentService } from '../services/student.service';
           <div class="form-group">
             <label>Lifecycle Stage</label>
             <select [(ngModel)]="newStudent.lifecycleStage">
-              <option value="Admission">Admission</option>
-              <option value="Academic">Academic</option>
-              <option value="Placement">Placement</option>
-              <option value="Alumni">Alumni</option>
+              <option value="APPLICANT">Applicant</option>
+              <option value="ENROLLED">Enrolled</option>
+              <option value="ACADEMICS">Academics</option>
+              <option value="GRADUATION_ELIGIBLE">Graduation Eligible</option>
+              <option value="ALUMNI">Alumni</option>
             </select>
           </div>
         </div>
@@ -205,7 +206,7 @@ export class StudentsComponent implements OnInit {
     email: '',
     department: '',
     currentSemester: null,
-    lifecycleStage: 'Admission'
+    lifecycleStage: 'APPLICANT'
   };
   successMessage = '';
   errorMessage = '';
@@ -261,7 +262,7 @@ export class StudentsComponent implements OnInit {
           email: '',
           department: '',
           currentSemester: null,
-          lifecycleStage: 'Admission'
+          lifecycleStage: 'APPLICANT'
         };
         this.loadStudents();
         setTimeout(() => {

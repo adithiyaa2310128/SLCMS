@@ -28,7 +28,7 @@ const runTest = async () => {
                 email: sId + "@test.com",
                 department: "Test",
                 currentSemester: 1,
-                lifecycleStage: "Academic",
+                lifecycleStage: "ACADEMICS",
                 gpa: tc.gpa,
                 attendancePercentage: tc.att,
                 riskStatus: "Low"
