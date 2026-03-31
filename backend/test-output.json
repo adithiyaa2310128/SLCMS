@@ -1,9 +1,0 @@
-{
-  "statusCode": 200,
-  "data": {
-    "totalStudents": 53,
-    "totalAlumni": 28,
-    "averageAttendance": 0,
-    "recentChats": []
-  }
-}
