@@ -1,7 +1,11 @@
 const Student = require("../models/Student");
 
-const updateStudentIntelligence = async (studentId) => {
-  const student = await Student.findById(studentId);
+const updateStudentIntelligence = async (identifier) => {
+  // Search by _id or studentId to be robust
+  let student = await Student.findById(identifier).catch(() => null);
+  if (!student) {
+    student = await Student.findOne({ studentId: identifier });
+  }
   if (!student) {
     return;
   }

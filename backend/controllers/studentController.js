@@ -1,4 +1,5 @@
 const Student = require("../models/Student");
+const { updateStudentIntelligence } = require("../services/studentIntelligence");
 
 // ➕ CREATE STUDENT
 exports.createStudent = async (req, res) => {
@@ -14,7 +15,13 @@ exports.createStudent = async (req, res) => {
     const student = new Student(studentData);
     await student.save();
 
-    res.status(201).json(student);
+    // 🧠 Dynamic Risk & Intelligence Calculation for the new student
+    await updateStudentIntelligence(student._id);
+
+    // Refresh the student to get the updated fields
+    const updatedStudent = await Student.findById(student._id);
+
+    res.status(201).json(updatedStudent);
   } catch (err) {
     console.error("Error creating student:", err); // Log error for debugging
     res.status(500).json({
@@ -70,7 +77,13 @@ exports.updateStudent = async (req, res) => {
       return res.status(404).json({ message: "Student not found" });
     }
 
-    res.status(200).json(student);
+    // 🧠 Dynamic Risk & Intelligence Calculation after update
+    await updateStudentIntelligence(req.params.id);
+
+    // Refresh the student to get the updated fields
+    const updatedStudent = await Student.findById(req.params.id);
+
+    res.status(200).json(updatedStudent);
   } catch (err) {
     res.status(500).json({
       message: "Failed to update student",

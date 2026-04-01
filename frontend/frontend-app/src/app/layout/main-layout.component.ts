@@ -74,9 +74,6 @@ import { AuthService } from '../services/auth.service';
             <a routerLink="/announcements" routerLinkActive="active">
               <i class="icon">📢</i><span>Announcements</span>
             </a>
-            <a [routerLink]="['/chat', 'general']" routerLinkActive="active">
-              <i class="icon">💬</i><span>Chat Rooms</span>
-            </a>
           </div>
 
           <div class="nav-section">

@@ -1,8 +1,6 @@
 const Student = require("../models/Student");
 const Alumni = require("../models/Alumni");
 const Attendance = require("../models/Attendance");
-const Chat = require("../models/Chat");
-
 exports.getAdminStats = async (req, res) => {
     try {
         // 1. Total Student Count
@@ -25,16 +23,10 @@ exports.getAdminStats = async (req, res) => {
         // We can just return the count for now, and let the frontend keep its existing call if needed,
         // but better to aggregate it here.
 
-        // 5. Recent Chat Messages
-        const recentChats = await Chat.find()
-            .sort({ createdAt: -1 })
-            .limit(5);
-
         res.status(200).json({
             totalStudents,
             totalAlumni,
-            averageAttendance,
-            recentChats
+            averageAttendance
         });
     } catch (error) {
         res.status(500).json({ message: error.message });

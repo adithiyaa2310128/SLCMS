@@ -2,10 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlumniService } from '../services/alumni.service';
-import { ChatService } from '../services/chat.service';
 import { AuthService } from '../services/auth.service';
-import { Subscription } from 'rxjs';
-
 @Component({
   selector: 'app-alumni',
   standalone: true,
@@ -28,7 +25,7 @@ import { Subscription } from 'rxjs';
 
       <div class="main-content" *ngIf="!loading">
         <!-- Alumni Cards Grid -->
-        <div class="alumni-section" [class.with-chat]="chatOpen">
+        <div class="alumni-section">
           <div class="alumni-grid">
             <div class="alumni-card" *ngFor="let alum of alumni"
                  [class.active]="selectedAlumni?._id === alum._id">
@@ -47,10 +44,6 @@ import { Subscription } from 'rxjs';
                 <span class="availability" [class.online]="alum.available">
                   {{ alum.available ? '🟢 Available' : '🔴 Unavailable' }}
                 </span>
-                <button class="btn-chat" (click)="openChat(alum)"
-                        [disabled]="!alum.available">
-                  💬 Chat
-                </button>
               </div>
               <a *ngIf="alum.linkedin" [href]="alum.linkedin" target="_blank" class="linkedin-link">
                 🔗 LinkedIn
@@ -63,35 +56,6 @@ import { Subscription } from 'rxjs';
           </div>
         </div>
 
-        <!-- Inline Chat Panel -->
-        <div class="chat-panel" *ngIf="chatOpen">
-          <div class="chat-header">
-            <div class="chat-title">
-              <h3>{{ selectedAlumni?.company }} Chat</h3>
-              <span class="chat-subtitle">Talking with {{ selectedAlumni?.name }}</span>
-            </div>
-            <button class="btn-close" (click)="closeChat()">✕</button>
-          </div>
-
-          <div class="messages-area" #scrollContainer>
-            <div class="chat-info">
-              <p>👋 Welcome to the <strong>{{ selectedAlumni?.company }}</strong> alumni channel!</p>
-              <p>Ask about work culture, interview tips, or career advice.</p>
-            </div>
-            <div *ngFor="let msg of messages" class="message-bubble"
-                 [ngClass]="{'own-message': msg.senderId === currentUserId}">
-              <div class="sender-name" *ngIf="msg.senderId !== currentUserId">{{ msg.senderName }}</div>
-              <div class="message-content">{{ msg.message }}</div>
-              <div class="timestamp">{{ msg.timestamp | date:'shortTime' }}</div>
-            </div>
-          </div>
-
-          <div class="input-area">
-            <input type="text" [(ngModel)]="newMessage"
-                   (keyup.enter)="sendMessage()"
-                   placeholder="Type a message...">
-            <button (click)="sendMessage()" [disabled]="!newMessage.trim()">Send</button>
-          </div>
         </div>
       </div>
     </div>
@@ -265,45 +229,20 @@ import { Subscription } from 'rxjs';
   `]
 })
 export class AlumniComponent implements OnInit, OnDestroy {
-  @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
-
   alumni: any[] = [];
   searchCompany = '';
   loading = true;
-
-  // Chat
-  chatOpen = false;
-  selectedAlumni: any = null;
-  messages: any[] = [];
-  newMessage = '';
-  currentUserId = '';
-  currentUserName = '';
-  private chatSub!: Subscription;
 
   // Color palette for avatars
   private colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#2c3e50'];
 
   constructor(
     private alumniService: AlumniService,
-    private chatService: ChatService,
     private authService: AuthService
   ) { }
 
   ngOnInit() {
-    this.authService.user$.subscribe(user => {
-      if (user) {
-        this.currentUserId = user._id;
-        this.currentUserName = user.name;
-      }
-    });
-
     this.search();
-
-    // Listen for incoming messages
-    this.chatSub = this.chatService.getMessages().subscribe((msg: any) => {
-      this.messages.push(msg);
-      this.scrollToBottom();
-    });
   }
 
   search() {
@@ -328,61 +267,6 @@ export class AlumniComponent implements OnInit, OnDestroy {
     return this.colors[Math.abs(hash) % this.colors.length];
   }
 
-  openChat(alum: any) {
-    this.selectedAlumni = alum;
-    this.chatOpen = true;
-    this.messages = [];
-
-    const room = alum.company.toLowerCase().replace(/\s+/g, '-');
-    this.chatService.joinRoom(room);
-
-    // Load chat history
-    this.chatService.getChatHistory(room).subscribe({
-      next: (data: any) => {
-        this.messages = data;
-        this.scrollToBottom();
-      },
-      error: (err: any) => {
-        console.error('Failed to load chat history:', err);
-      }
-    });
-  }
-
-  closeChat() {
-    this.chatOpen = false;
-    this.selectedAlumni = null;
-    this.messages = [];
-  }
-
-  sendMessage() {
-    if (!this.newMessage.trim() || !this.selectedAlumni) return;
-
-    const room = this.selectedAlumni.company.toLowerCase().replace(/\s+/g, '-');
-    const msgData = {
-      room,
-      message: this.newMessage,
-      senderId: this.currentUserId,
-      senderName: this.currentUserName
-    };
-
-    this.chatService.sendMessage(msgData);
-    this.newMessage = '';
-  }
-
-  scrollToBottom() {
-    try {
-      setTimeout(() => {
-        if (this.scrollContainer) {
-          this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
-        }
-      }, 50);
-    } catch (err) { }
-  }
-
   ngOnDestroy() {
-    if (this.chatSub) this.chatSub.unsubscribe();
-    if (this.chatOpen) {
-      this.chatService.disconnect();
-    }
   }
 }

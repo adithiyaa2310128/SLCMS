@@ -73,24 +73,6 @@ import { AuthService } from '../services/auth.service';
           </div>
         </div>
 
-        <div class="activity-section" *ngIf="isAdmin">
-          <h3>💬 Recent Communication activity</h3>
-          <div class="activity-list">
-            <div *ngIf="recentChats.length > 0; else noActivity">
-              <div class="activity-item" *ngFor="let chat of recentChats">
-                <div class="activity-meta">
-                  <span class="sender">{{ chat.senderName }}</span>
-                  <span class="time">{{ chat.createdAt | date:'shortTime' }}</span>
-                </div>
-                <p class="message-preview">{{ chat.message }}</p>
-                <span class="room-tag">Room: {{ chat.room }}</span>
-              </div>
-            </div>
-            <ng-template #noActivity>
-              <p>No recent activity found.</p>
-            </ng-template>
-          </div>
-        </div>
       </div>
     </div>
   `,
@@ -269,7 +251,6 @@ export class DashboardComponent implements OnInit {
   averageAttendance = 0;
   atRiskCount = 0;
   atRiskStudents: any[] = [];
-  recentChats: any[] = [];
   isAdmin = false;
   user: any = null;
 
@@ -304,7 +285,6 @@ export class DashboardComponent implements OnInit {
       this.dashboardService.getAdminStats().subscribe((data: any) => {
         this.totalAlumni = data.totalAlumni;
         this.averageAttendance = data.averageAttendance;
-        this.recentChats = data.recentChats;
       });
     }
   }

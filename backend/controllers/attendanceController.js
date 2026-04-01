@@ -26,9 +26,10 @@ exports.markAttendance = async (req, res) => {
       totalClasses === 0 ? 0 : (presentCount / totalClasses) * 100;
 
     // 3️⃣ Update student attendance
-    await Student.findByIdAndUpdate(studentId, {
-      attendancePercentage
-    });
+    await Student.findOneAndUpdate(
+      { $or: [{ _id: studentId }, { studentId: studentId }] },
+      { attendancePercentage }
+    );
 
     // 4️⃣ Update intelligence (risk, lifecycle, placement, index)
     await updateStudentIntelligence(studentId);

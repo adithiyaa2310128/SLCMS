@@ -29,7 +29,10 @@ exports.addMarks = async (req, res) => {
     const gpa = Math.round((average / 10) * 10) / 10;
 
     // 5️⃣ Update GPA in Student
-    await Student.findByIdAndUpdate(studentId, { gpa });
+    await Student.findOneAndUpdate(
+      { $or: [{ _id: studentId }, { studentId: studentId }] },
+      { gpa }
+    );
 
     // 6️⃣ Update intelligence (risk, lifecycle, placement, index)
     await updateStudentIntelligence(studentId);

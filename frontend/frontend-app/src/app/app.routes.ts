@@ -7,7 +7,6 @@ import { StudentsComponent } from './pages/students.component';
 import { AttendanceComponent } from './pages/attendance.component';
 import { MarksComponent } from './pages/marks.component';
 import { AlumniComponent } from './pages/alumni.component';
-import { ChatComponent } from './pages/chat.component';
 
 // New Modules
 import { LeadsComponent } from './pages/leads.component';
@@ -45,7 +44,6 @@ export const routes: Routes = [
       { path: 'campus', component: CampusComponent },
       // Communication
       { path: 'announcements', component: AnnouncementsComponent },
-      { path: 'chat/:room', component: ChatComponent },
       // Placement & Alumni
       { path: 'placements', component: PlacementsComponent },
       { path: 'alumni', component: AlumniComponent },
