@@ -27,8 +27,7 @@ import { AuthService } from '../services/auth.service';
         <!-- Alumni Cards Grid -->
         <div class="alumni-section">
           <div class="alumni-grid">
-            <div class="alumni-card" *ngFor="let alum of alumni"
-                 [class.active]="selectedAlumni?._id === alum._id">
+            <div class="alumni-card" *ngFor="let alum of alumni">
               <div class="avatar" [style.background]="getAvatarColor(alum.name)">
                 {{ alum.name.charAt(0).toUpperCase() }}
               </div>
@@ -54,8 +53,6 @@ import { AuthService } from '../services/auth.service';
               <p>No alumni found. Try searching for a specific company or check back later!</p>
             </div>
           </div>
-        </div>
-
         </div>
       </div>
     </div>
