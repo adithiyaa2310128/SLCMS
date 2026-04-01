@@ -32,12 +32,11 @@ const admissionSchema = new mongoose.Schema(
 );
 
 // Auto-generate application number
-admissionSchema.pre("save", async function (next) {
+admissionSchema.pre("save", async function () {
   if (!this.applicationNumber) {
     const count = await mongoose.model("Admission").countDocuments();
     this.applicationNumber = `APP-${new Date().getFullYear()}-${String(count + 1).padStart(4, "0")}`;
   }
-  next();
 });
 
 module.exports = mongoose.model("Admission", admissionSchema);

@@ -34,7 +34,7 @@ const feeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-feeSchema.pre("save", function (next) {
+feeSchema.pre("save", function () {
   this.netAmount = Math.max(0, this.amount - this.discount + this.fine);
 
   // Auto-mark overdue
@@ -48,7 +48,6 @@ feeSchema.pre("save", function (next) {
   if (this.status === "Paid" && !this.receiptNumber) {
     this.receiptNumber = `RCP-${Date.now()}`;
   }
-  next();
 });
 
 module.exports = mongoose.model("Fee", feeSchema);

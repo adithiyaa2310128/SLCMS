@@ -5,7 +5,7 @@ const courseSchema = new mongoose.Schema(
     courseCode: { type: String, required: true, unique: true },
     title: { type: String, required: true },
     department: { type: String, required: true },
-    credits: { type: Number, required: true, min: 1, max: 6 },
+    credits: { type: Number, required: true, min: 0, max: 6 },
     semester: { type: Number, required: true, min: 1, max: 8 },
     facultyName: { type: String, default: "" },
     facultyEmail: { type: String, default: "" },

@@ -24,7 +24,7 @@ const examSchema = new mongoose.Schema(
 );
 
 // Auto-calculate grade and grade points
-examSchema.pre("save", function (next) {
+examSchema.pre("save", function () {
   const percentage = this.maxMarks > 0 ? (this.obtainedMarks / this.maxMarks) * 100 : 0;
   if (percentage >= 90) { this.grade = "O"; this.gradePoints = 10; }
   else if (percentage >= 80) { this.grade = "A+"; this.gradePoints = 9; }
@@ -33,7 +33,6 @@ examSchema.pre("save", function (next) {
   else if (percentage >= 50) { this.grade = "B"; this.gradePoints = 6; }
   else if (percentage >= 40) { this.grade = "C"; this.gradePoints = 5; }
   else { this.grade = "F"; this.gradePoints = 0; }
-  next();
 });
 
 module.exports = mongoose.model("Exam", examSchema);

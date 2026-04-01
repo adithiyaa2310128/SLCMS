@@ -31,7 +31,7 @@ const leadSchema = new mongoose.Schema(
 );
 
 // Auto-compute lead score on save
-leadSchema.pre("save", function (next) {
+leadSchema.pre("save", function () {
   let score = 0;
   if (this.email) score += 20;
   if (this.phone) score += 15;
@@ -39,7 +39,6 @@ leadSchema.pre("save", function (next) {
   const statusBonus = { New: 10, Contacted: 30, Interested: 50, Applied: 70, Enrolled: 90, Dropped: 0 };
   score += statusBonus[this.status] || 0;
   this.leadScore = Math.min(100, score);
-  next();
 });
 
 module.exports = mongoose.model("Lead", leadSchema);
