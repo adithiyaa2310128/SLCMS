@@ -1,0 +1,43 @@
+# =============================================================
+# SLCMS — Backend Node.js Dependencies
+# =============================================================
+# This file documents all required npm packages for the backend.
+# To install everything, run:
+#   npm install
+#
+# For a clean install from scratch, run:
+#   npm ci
+# =============================================================
+
+# ── Runtime Dependencies ──────────────────────────────────────
+
+axios@^1.13.5          # HTTP client for making external API requests
+bcryptjs@^3.0.3        # Password hashing (bcrypt algorithm, pure JS)
+cors@^2.8.6            # Cross-Origin Resource Sharing middleware for Express
+dotenv@^17.2.3         # Loads environment variables from .env into process.env
+express@^5.2.1         # Fast, unopinionated web framework for Node.js
+jsonwebtoken@^9.0.3    # JSON Web Token creation and verification (auth)
+mongoose@^9.1.5        # MongoDB object modeling / ODM for Node.js
+socket.io@^4.8.3       # Real-time bidirectional event-based communication
+
+# ── Development Dependencies ──────────────────────────────────
+
+nodemon@^3.1.11        # Auto-restarts the server on file changes (dev only)
+
+# =============================================================
+# System Requirements
+# =============================================================
+# Node.js  : >= 18.x  (https://nodejs.org/)
+# npm      : >= 9.x   (bundled with Node.js)
+# MongoDB  : >= 6.x   (https://www.mongodb.com/try/download/community)
+#
+# Installation:
+#   cd backend
+#   npm install
+#
+# Start (production):
+#   npm start          → node server.js
+#
+# Start (development with auto-reload):
+#   npm run dev        → nodemon server.js
+# =============================================================

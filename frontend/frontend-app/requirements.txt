@@ -1,0 +1,57 @@
+# =============================================================
+# SLCMS — Frontend Angular Dependencies
+# =============================================================
+# This file documents all required npm packages for the Angular
+# frontend application.
+# To install everything, run:
+#   npm install
+#
+# For a clean install from scratch:
+#   npm ci
+# =============================================================
+
+# ── Runtime Dependencies ──────────────────────────────────────
+
+@angular/common@^21.1.0          # Angular common utilities and pipes
+@angular/compiler@^21.1.0        # Angular template compiler
+@angular/core@^21.1.0            # Angular core framework
+@angular/forms@^21.1.0           # Angular Reactive & Template-driven Forms
+@angular/platform-browser@^21.1.0 # Angular browser rendering platform
+@angular/router@^21.1.0          # Angular client-side routing module
+
+chart.js@^4.5.1                  # Flexible JavaScript charting library
+ng2-charts@^10.0.0               # Angular wrapper for Chart.js
+rxjs@~7.8.0                      # Reactive Extensions for JavaScript (Observables)
+socket.io-client@^4.8.3          # Socket.IO browser client for real-time features
+tslib@^2.3.0                     # TypeScript runtime helpers library
+zone.js@^0.16.1                  # Zone.js — required by Angular for change detection
+
+# ── Development Dependencies ──────────────────────────────────
+
+@angular/build@^21.1.2           # Angular build system (esbuild + Vite)
+@angular/cli@^21.1.2             # Angular command-line interface
+@angular/compiler-cli@^21.1.0    # Angular ahead-of-time (AOT) compiler CLI
+jsdom@^27.1.0                    # DOM implementation for testing
+typescript@~5.9.2                # TypeScript compiler
+vitest@^4.0.8                    # Fast unit test runner (Vite-native)
+
+# =============================================================
+# System Requirements
+# =============================================================
+# Node.js      : >= 18.x  (https://nodejs.org/)
+# npm          : >= 9.x   (bundled with Node.js)
+# Angular CLI  : >= 21.x  → npm install -g @angular/cli
+#
+# Installation:
+#   cd frontend/frontend-app
+#   npm install
+#
+# Start development server:
+#   npm start            → ng serve  (http://localhost:4200)
+#
+# Build for production:
+#   npm run build        → ng build
+#
+# Run tests:
+#   npm test             → ng test
+# =============================================================
