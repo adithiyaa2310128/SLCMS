@@ -20,7 +20,7 @@ import { StudentService } from '../services/student.service';
         <h3>Add Exam Result</h3>
         <div class="form-grid">
           <div class="fg"><label>Student *</label>
-            <select [(ngModel)]="form.studentId" (change)="onStudentChange()">
+            <select [(ngModel)]="form.studentId" (ngModelChange)="onStudentChange()">
               <option value="">-- Select Student --</option>
               <option *ngFor="let s of students" [value]="s.studentId">{{ s.name }} ({{ s.studentId }})</option>
             </select>
@@ -55,11 +55,11 @@ import { StudentService } from '../services/student.service';
 
       <!-- Filter -->
       <div class="filter-bar">
-        <select [(ngModel)]="filterStudent" (change)="applyFilter()">
+        <select [(ngModel)]="filterStudent" (ngModelChange)="applyFilter()">
           <option value="">All Students</option>
           <option *ngFor="let s of students" [value]="s.studentId">{{ s.name }}</option>
         </select>
-        <select [(ngModel)]="filterType" (change)="applyFilter()">
+        <select [(ngModel)]="filterType" (ngModelChange)="applyFilter()">
           <option value="">All Types</option>
           <option *ngFor="let t of examTypes" [value]="t">{{ t }}</option>
         </select>

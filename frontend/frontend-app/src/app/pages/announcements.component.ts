@@ -48,7 +48,7 @@ import { AnnouncementService } from '../services/announcement.service';
       </div>
 
       <div class="filter-bar">
-        <select [(ngModel)]="filterType" (change)="load()">
+        <select [(ngModel)]="filterType" (ngModelChange)="load()">
           <option value="">All Types</option>
           <option *ngFor="let t of types" [value]="t">{{ t }}</option>
         </select>

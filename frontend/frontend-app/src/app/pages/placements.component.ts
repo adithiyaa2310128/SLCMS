@@ -27,7 +27,7 @@ import { StudentService } from '../services/student.service';
         <h3>Add Placement Record</h3>
         <div class="form-grid">
           <div class="fg"><label>Student *</label>
-            <select [(ngModel)]="form.studentId" (change)="onStudentChange()">
+            <select [(ngModel)]="form.studentId" (ngModelChange)="onStudentChange()">
               <option value="">-- Select --</option>
               <option *ngFor="let s of students" [value]="s.studentId">{{ s.name }} ({{ s.studentId }})</option>
             </select>
@@ -57,11 +57,11 @@ import { StudentService } from '../services/student.service';
       </div>
 
       <div class="filter-bar">
-        <select [(ngModel)]="filterStatus" (change)="applyFilter()">
+        <select [(ngModel)]="filterStatus" (ngModelChange)="applyFilter()">
           <option value="">All Statuses</option>
           <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
         </select>
-        <select [(ngModel)]="filterType" (change)="applyFilter()">
+        <select [(ngModel)]="filterType" (ngModelChange)="applyFilter()">
           <option value="">All Types</option>
           <option *ngFor="let t of types" [value]="t">{{ t }}</option>
         </select>
@@ -85,7 +85,7 @@ import { StudentService } from '../services/student.service';
               </td>
               <td>{{ p.driveDate ? (p.driveDate | date:'dd MMM') : '—' }}</td>
               <td>
-                <select class="status-select" [value]="p.status" (change)="updateStatus(p, $any($event.target).value)">
+                <select class="status-select" [value]="p.status" (ngModelChange)="updateStatus(p, $any($event.target).value)">
                   <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
                 </select>
               </td>

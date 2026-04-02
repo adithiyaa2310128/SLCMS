@@ -58,7 +58,7 @@ import { LeadService } from '../services/lead.service';
 
       <!-- Filters -->
       <div class="filter-bar">
-        <select [(ngModel)]="filterStatus" (change)="loadLeads()">
+        <select [(ngModel)]="filterStatus" (ngModelChange)="loadLeads()">
           <option value="">All Statuses</option>
           <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
         </select>
@@ -91,7 +91,7 @@ import { LeadService } from '../services/lead.service';
               </td>
               <td>{{ l.followUpDate ? (l.followUpDate | date:'dd MMM') : '—' }}</td>
               <td class="actions">
-                <select (change)="updateStatus(l, $any($event.target).value)" class="status-select">
+                <select (ngModelChange)="updateStatus(l, $any($event.target).value)" class="status-select">
                   <option value="">Change status</option>
                   <option *ngFor="let s of statuses" [value]="s">→ {{ s }}</option>
                 </select>

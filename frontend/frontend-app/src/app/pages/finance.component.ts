@@ -52,7 +52,7 @@ import { StudentService } from '../services/student.service';
         <h3>New Fee Record</h3>
         <div class="form-grid">
           <div class="fg"><label>Student *</label>
-            <select [(ngModel)]="form.studentId" (change)="onStudentChange()">
+            <select [(ngModel)]="form.studentId" (ngModelChange)="onStudentChange()">
               <option value="">-- Select Student --</option>
               <option *ngFor="let s of students" [value]="s.studentId">{{ s.name }} ({{ s.studentId }})</option>
             </select>
@@ -81,14 +81,14 @@ import { StudentService } from '../services/student.service';
 
       <!-- Filter Bar -->
       <div class="filter-bar">
-        <select [(ngModel)]="filterStatus" (change)="applyFilter()">
+        <select [(ngModel)]="filterStatus" (ngModelChange)="applyFilter()">
           <option value="">All Statuses</option>
           <option value="Pending">Pending</option>
           <option value="Paid">Paid</option>
           <option value="Overdue">Overdue</option>
           <option value="Waived">Waived</option>
         </select>
-        <select [(ngModel)]="filterType" (change)="applyFilter()">
+        <select [(ngModel)]="filterType" (ngModelChange)="applyFilter()">
           <option value="">All Types</option>
           <option *ngFor="let f of feeTypes" [value]="f">{{ f }}</option>
         </select>
@@ -114,7 +114,7 @@ import { StudentService } from '../services/student.service';
               <td><span class="badge" [ngClass]="statusClass(f.status)">{{ f.status }}</span></td>
               <td><span class="receipt" *ngIf="f.receiptNumber">{{ f.receiptNumber }}</span><span *ngIf="!f.receiptNumber">—</span></td>
               <td class="actions">
-                <select class="pay-select" (change)="pay(f, $any($event.target).value)" *ngIf="f.status !== 'Paid' && f.status !== 'Waived'">
+                <select class="pay-select" (ngModelChange)="pay(f, $any($event.target).value)" *ngIf="f.status !== 'Paid' && f.status !== 'Waived'">
                   <option value="">💳 Pay via...</option>
                   <option value="Online">Online</option>
                   <option value="Cash">Cash</option>

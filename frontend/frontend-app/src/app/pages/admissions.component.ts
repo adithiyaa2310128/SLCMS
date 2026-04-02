@@ -55,7 +55,7 @@ import { AdmissionService } from '../services/admission.service';
 
       <!-- Filter -->
       <div class="filter-bar">
-        <select [(ngModel)]="filterStatus" (change)="applyFilter()">
+        <select [(ngModel)]="filterStatus" (ngModelChange)="applyFilter()">
           <option value="">All Statuses</option>
           <option *ngFor="let s of appStatuses" [value]="s">{{ s }}</option>
         </select>
@@ -78,7 +78,7 @@ import { AdmissionService } from '../services/admission.service';
               <td>{{ a.entranceScore ?? '—' }}</td>
               <td>{{ a.interviewDate ? (a.interviewDate | date:'dd MMM') : '—' }}</td>
               <td>
-                <select class="status-select" [value]="a.applicationStatus" (change)="updateStatus(a, $any($event.target).value)">
+                <select class="status-select" [value]="a.applicationStatus" (ngModelChange)="updateStatus(a, $any($event.target).value)">
                   <option *ngFor="let s of appStatuses" [value]="s">{{ s }}</option>
                 </select>
               </td>

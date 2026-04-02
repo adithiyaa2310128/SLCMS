@@ -16,11 +16,11 @@ import { CourseService } from '../services/course.service';
 
       <!-- Filters -->
       <div class="filter-bar">
-        <select [(ngModel)]="filterDept" (change)="load()">
+        <select [(ngModel)]="filterDept" (ngModelChange)="load()">
           <option value="">All Departments</option>
           <option *ngFor="let d of departments" [value]="d">{{ d }}</option>
         </select>
-        <select [(ngModel)]="filterSem" (change)="load()">
+        <select [(ngModel)]="filterSem" (ngModelChange)="load()">
           <option value="">All Semesters</option>
           <option *ngFor="let s of [1,2,3,4,5,6,7,8]" [value]="s">Semester {{ s }}</option>
         </select>

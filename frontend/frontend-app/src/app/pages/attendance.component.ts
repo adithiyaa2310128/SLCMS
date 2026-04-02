@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StudentService } from '../services/student.service';
@@ -18,7 +18,7 @@ import { AttendanceService } from '../services/attendance.service';
         <div class="form-row">
           <div class="form-group">
             <label>Student</label>
-            <select [(ngModel)]="selectedStudentId" (change)="onStudentChange()">
+            <select [(ngModel)]="selectedStudentId" (ngModelChange)="onStudentChange()">
               <option value="">-- Select Student --</option>
               <option *ngFor="let s of students" [value]="s._id">{{ s.name }} ({{ s.studentId }})</option>
             </select>
@@ -33,11 +33,11 @@ import { AttendanceService } from '../services/attendance.service';
           </div>
           <div class="form-group btn-group">
             <button class="btn present" (click)="markAttendance('Present')"
-                    [disabled]="!selectedStudentId || !subject">
+                    [disabled]="!selectedStudentId || !subject || markingAttendance">
               ✅ Present
             </button>
             <button class="btn absent" (click)="markAttendance('Absent')"
-                    [disabled]="!selectedStudentId || !subject">
+                    [disabled]="!selectedStudentId || !subject || markingAttendance">
               ❌ Absent
             </button>
           </div>
@@ -196,10 +196,12 @@ export class AttendanceComponent implements OnInit {
   errorMessage = '';
   loadingStudents = true;
   loadingAttendance = false;
+  markingAttendance = false;
 
   constructor(
     private studentService: StudentService,
-    private attendanceService: AttendanceService
+    private attendanceService: AttendanceService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -211,15 +213,19 @@ export class AttendanceComponent implements OnInit {
       next: (data: any) => {
         this.students = data;
         this.loadingStudents = false;
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('Failed to load students:', err);
         this.loadingStudents = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
   onStudentChange() {
+    this.errorMessage = '';
+    this.statusMessage = '';
     if (this.selectedStudentId) {
       this.loadAttendance();
     } else {
@@ -232,6 +238,7 @@ export class AttendanceComponent implements OnInit {
 
   loadAttendance() {
     this.loadingAttendance = true;
+    this.errorMessage = '';
     this.attendanceService.getAttendance(this.selectedStudentId).subscribe({
       next: (data: any) => {
         this.attendanceRecords = data.attendance || [];
@@ -239,16 +246,21 @@ export class AttendanceComponent implements OnInit {
         this.presentCount = this.attendanceRecords.filter((r: any) => r.status === 'Present').length;
         this.absentCount = this.attendanceRecords.filter((r: any) => r.status === 'Absent').length;
         this.loadingAttendance = false;
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('Failed to load attendance:', err);
         this.loadingAttendance = false;
         this.errorMessage = 'Failed to load attendance records.';
+        this.cdr.detectChanges();
       }
     });
   }
 
   markAttendance(status: 'Present' | 'Absent') {
+    if (this.markingAttendance) return;
+    
+    this.markingAttendance = true;
     this.statusMessage = '';
     this.errorMessage = '';
 
@@ -256,12 +268,16 @@ export class AttendanceComponent implements OnInit {
       this.selectedStudentId, status, this.subject, this.attendanceDate
     ).subscribe({
       next: (res: any) => {
+        this.markingAttendance = false;
         this.statusMessage = `Attendance marked as ${status}! (${res.attendancePercentage?.toFixed(0)}%)`;
         this.loadAttendance();
-        setTimeout(() => { this.statusMessage = ''; }, 3000);
+        setTimeout(() => { if (this.statusMessage.includes('marked as')) this.statusMessage = ''; this.cdr.detectChanges(); }, 3000);
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
+        this.markingAttendance = false;
         this.errorMessage = err.error?.message || 'Failed to mark attendance.';
+        this.cdr.detectChanges();
       }
     });
   }

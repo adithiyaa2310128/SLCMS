@@ -18,7 +18,7 @@ import { MarksService } from '../services/marks.service';
         <div class="form-row">
           <div class="form-group">
             <label>Student</label>
-            <select [(ngModel)]="selectedStudentId" (change)="onStudentChange()">
+            <select [(ngModel)]="selectedStudentId" (ngModelChange)="onStudentChange()">
               <option value="">-- Select Student --</option>
               <option *ngFor="let s of students" [value]="s._id">{{ s.name }} ({{ s.studentId }})</option>
             </select>
