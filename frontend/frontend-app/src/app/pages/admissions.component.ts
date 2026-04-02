@@ -78,9 +78,11 @@ import { AdmissionService } from '../services/admission.service';
               <td>{{ a.entranceScore ?? '—' }}</td>
               <td>{{ a.interviewDate ? (a.interviewDate | date:'dd MMM') : '—' }}</td>
               <td>
-                <select class="status-select" [value]="a.applicationStatus" (ngModelChange)="updateStatus(a, $any($event.target).value)">
-                  <option *ngFor="let s of appStatuses" [value]="s">{{ s }}</option>
+                <select class="status-select" *ngIf="a.applicationStatus !== 'Enrolled' && a.applicationStatus !== 'Rejected'" [ngModel]="a.applicationStatus" (ngModelChange)="updateStatus(a, $event, a.applicationStatus)">
+                  <option *ngFor="let s of tableStatuses" [value]="s">{{ s }}</option>
                 </select>
+                <span class="enrolled-badge" *ngIf="a.applicationStatus === 'Enrolled'">✅ Enrolled</span>
+                <span class="rejected-badge" *ngIf="a.applicationStatus === 'Rejected'">❌ Rejected</span>
               </td>
               <td>
                 <span class="doc-count">{{ uploadedDocs(a) }}/{{ a.documents?.length || 5 }}</span>
@@ -134,6 +136,8 @@ import { AdmissionService } from '../services/admission.service';
     code { background:#f1f5f9; padding:.2rem .5rem; border-radius:4px; font-size:.8rem; }
     small { color:#94a3b8; }
     .status-select { padding:.35rem .5rem; border:1px solid #e2e8f0; border-radius:6px; font-size:.8rem; }
+    .enrolled-badge { padding:.35rem .5rem; background:#10b981; color:#fff; border-radius:6px; font-size:.8rem; font-weight:600; display:inline-block; }
+    .rejected-badge { padding:.35rem .5rem; background:#ef4444; color:#fff; border-radius:6px; font-size:.8rem; font-weight:600; display:inline-block; }
     .doc-count { background:#f0f9ff; color:#0369a1; padding:.2rem .5rem; border-radius:4px; font-size:.8rem; font-weight:600; }
     .actions { display:flex; gap:.5rem; align-items:center; }
     .btn-enroll { padding:.3rem .7rem; background:#10b981; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:.8rem; font-weight:600; }
@@ -156,6 +160,7 @@ export class AdmissionsComponent implements OnInit {
 
   departments = ['Computer Science', 'Electronics', 'Mechanical', 'Civil', 'Electrical', 'Information Technology'];
   appStatuses = ['Pending', 'Shortlisted', 'Selected', 'Rejected', 'Enrolled'];
+  tableStatuses = ['Pending', 'Shortlisted', 'Selected', 'Rejected'];
   form: any = { name:'', email:'', phone:'', program:'', department:'', entranceScore:'', interviewDate:'', applicationStatus:'Pending' };
 
   constructor(private admissionService: AdmissionService) {}
@@ -187,8 +192,33 @@ export class AdmissionsComponent implements OnInit {
     });
   }
 
-  updateStatus(a: any, status: string) {
-    this.admissionService.update(a._id, { applicationStatus: status }).subscribe(() => { this.load(); this.loadStats(); });
+  updateStatus(a: any, newStatus: string, oldStatus: string) {
+    if (newStatus === oldStatus) return;
+
+    a.applicationStatus = newStatus;
+
+    if (this.stats && this.stats.byStatus) {
+      let oldS = this.stats.byStatus.find((s:any) => s._id === oldStatus);
+      if (oldS) oldS.count = Math.max(0, oldS.count - 1);
+      
+      let newS = this.stats.byStatus.find((s:any) => s._id === newStatus);
+      if (newS) {
+        newS.count++;
+      } else {
+        this.stats.byStatus.push({ _id: newStatus, count: 1 });
+      }
+    }
+
+    this.applyFilter();
+
+    this.admissionService.update(a._id, { applicationStatus: newStatus }).subscribe({
+      next: () => this.loadStats(),
+      error: () => {
+        a.applicationStatus = oldStatus;
+        this.applyFilter();
+        this.loadStats();
+      }
+    });
   }
 
   enroll(a: any) {

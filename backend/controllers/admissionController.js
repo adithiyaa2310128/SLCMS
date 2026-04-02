@@ -51,6 +51,7 @@ exports.enrollApplicant = async (req, res) => {
 
     const studentId = `STU-${Date.now()}`;
     const student = new Student({
+      _id: studentId,
       studentId,
       name: admission.name,
       email: admission.email,
